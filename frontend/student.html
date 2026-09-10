@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>College of Cape Town | Student Reports</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+              serif: ['"Source Serif 4"', 'Georgia', 'serif'],
+            },
+            colors: {
+              cct: {
+                navy: '#111111',
+                slate: '#1F1F1F',
+                gold: '#C81E2B',
+                ivory: '#F7F2F2',
+                mist: '#F5F5F5',
+                text: '#1A1A1A',
+                muted: '#6B6B6B',
+                success: '#2C7A52',
+                successBg: '#E9F4EE',
+                warning: '#9D2A2A',
+                warningBg: '#FDECEC',
+              },
+            },
+            boxShadow: {
+              soft: '0 10px 30px rgba(16, 32, 62, 0.08)',
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --cct-navy: #111111;
+        --cct-slate: #1f1f1f;
+        --cct-gold: #c81e2b;
+        --cct-gold-soft: #f6e5e7;
+        --cct-mist: #f5f5f5;
+        --cct-surface: #ffffff;
+        --cct-border: #e2e2e2;
+        --cct-text: #1a1a1a;
+        --cct-muted: #6b6b6b;
+        --cct-success: #2c7a52;
+        --cct-success-bg: #e9f4ee;
+        --cct-warning: #9d2a2a;
+        --cct-warning-bg: #fdecec;
+      }
+
+      body {
+        background: linear-gradient(180deg, #f7f8fa 0%, #eef2f7 100%);
+      }
+
+      .report-card-glow {
+        background: radial-gradient(circle at top right, rgba(200, 30, 43, 0.12), transparent 38%);
+      }
+
+      .sidebar-accent {
+        background-image: repeating-linear-gradient(
+          115deg,
+          rgba(200, 30, 43, 0.06) 0px,
+          rgba(200, 30, 43, 0.06) 1px,
+          transparent 1px,
+          transparent 56px
+        );
+      }
+
+      .mobile-overlay {
+        background: rgba(15, 23, 42, 0.52);
+        backdrop-filter: blur(4px);
+      }
+
+      .hamburger-line {
+        display: block;
+        width: 1.1rem;
+        height: 2px;
+        border-radius: 9999px;
+        background: currentColor;
+        transition: transform 0.28s ease, opacity 0.2s ease, width 0.2s ease;
+      }
+
+      #mobileMenuToggle.menu-open .hamburger-line:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+      }
+
+      #mobileMenuToggle.menu-open .hamburger-line:nth-child(2) {
+        opacity: 0;
+        width: 0;
+      }
+
+      #mobileMenuToggle.menu-open .hamburger-line:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+      }
+
+      .cct-logo {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .cct-logo-mark {
+        position: relative;
+        width: 74px;
+        height: 74px;
+        border-radius: 9999px;
+        background: #c81e2b;
+        border: 4px solid #111111;
+        box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.18);
+      }
+
+      .cct-logo-mark::before,
+      .cct-logo-mark::after {
+        content: '';
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        border-radius: 9999px;
+        background: #111111;
+      }
+
+      .cct-logo-mark::before {
+        left: 10px;
+        top: 9px;
+        box-shadow: 32px 0 0 #111111, 16px 28px 0 #111111;
+      }
+
+      .cct-logo-mark::after {
+        right: 10px;
+        bottom: 9px;
+        box-shadow: -32px 0 0 #111111, -16px -28px 0 #111111;
+      }
+
+      .cct-wordmark {
+        display: flex;
+        flex-direction: column;
+        line-height: 0.9;
+        color: #111111;
+      }
+
+      .cct-wordmark .line-1,
+      .cct-wordmark .line-2 {
+        font-size: clamp(1.8rem, 2vw + 1rem, 3rem);
+        font-weight: 900;
+        letter-spacing: -0.08em;
+      }
+
+      .cct-wordmark .line-3 {
+        margin-top: 0.4rem;
+        font-size: 0.9rem;
+        letter-spacing: 0.14em;
+        font-style: italic;
+        font-weight: 600;
+        color: #111111;
+      }
+
+      .fade-in {
+        animation: fadeIn 0.35s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .loader-sheet {
+        animation: floatReport 2.8s ease-in-out infinite;
+      }
+
+      @keyframes floatReport {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-8px);
+        }
+      }
+
+      .loader-line {
+        animation: pulseLine 1.1s ease-in-out infinite alternate;
+      }
+
+      .loader-line:nth-child(2) {
+        animation-delay: 0.1s;
+      }
+
+      .loader-line:nth-child(3) {
+        animation-delay: 0.2s;
+      }
+
+      .loader-line:nth-child(4) {
+        animation-delay: 0.3s;
+      }
+
+      @keyframes pulseLine {
+        0% {
+          opacity: 0.4;
+          transform: scaleX(0.88);
+        }
+        100% {
+          opacity: 1;
+          transform: scaleX(1);
+        }
+      }
+
+      .sidebar-link {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .sidebar-link::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.06), transparent);
+        transform: translateX(-120%);
+        transition: transform 0.5s ease;
+      }
+
+      .sidebar-link:hover::after {
+        transform: translateX(120%);
+      }
+
+      .nav-icon-gear {
+        transition: transform 0.5s ease;
+      }
+
+      .sidebar-link:hover .nav-icon-gear {
+        transform: rotate(180deg);
+      }
+
+      .icon-report:hover {
+        animation: reportPulse 0.35s ease;
+      }
+
+      @keyframes reportPulse {
+        0%,
+        100% {
+          transform: translateY(0) scale(1);
+        }
+        50% {
+          transform: translateY(-2px) scale(1.08);
+        }
+      }
+
+      .sidebar-link[data-view='dashboard']:hover .icon-dashboard {
+        transform: scale(1.12);
+      }
+
+      .sidebar-link[data-view='reports']:hover .icon-reports {
+        transform: translateY(-1px) rotate(-2deg);
+      }
+
+      .sidebar-link[data-view='settings']:hover .icon-settings {
+        transform: rotate(180deg);
+      }
+
+      .sidebar-link[data-view='logout']:hover .icon-logout {
+        transform: translateX(3px);
+      }
+
+      .status-pulse {
+        animation: pulseStatus 1.8s ease-in-out infinite;
+      }
+
+      @keyframes pulseStatus {
+        0%,
+        100% {
+          opacity: 0.7;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.12);
+        }
+      }
+
+      .modal-backdrop {
+        background: rgba(15, 23, 42, 0.45);
+      }
+
+      .report-table td,
+      .report-table th {
+        border-color: rgba(15, 23, 42, 0.08);
+      }
+
+      @media (max-width: 768px) {
+        body {
+          font-size: 14px;
+        }
+
+        #appView,
+        #loginView {
+          min-width: 0;
+          width: 100%;
+          max-width: 100vw;
+          overflow-x: hidden;
+        }
+
+        .mobile-sidebar-open {
+          transform: translateX(0);
+          box-shadow: 0 24px 80px rgba(17, 17, 17, 0.38);
+        }
+
+        header {
+          padding-left: 0.75rem !important;
+          padding-right: 0.75rem !important;
+        }
+
+        main {
+          padding: 0.75rem !important;
+        }
+
+        h1 {
+          font-size: clamp(1.35rem, 4vw, 2rem) !important;
+        }
+
+        h2 {
+          font-size: clamp(1.2rem, 3.6vw, 1.9rem) !important;
+        }
+
+        h3 {
+          font-size: clamp(1.05rem, 3vw, 1.5rem) !important;
+        }
+
+        p,
+        span,
+        button,
+        label,
+        input {
+          letter-spacing: -0.01em;
+        }
+
+        .cct-logo {
+          gap: 0.55rem;
+        }
+
+        .cct-logo-mark {
+          width: 48px;
+          height: 48px;
+        }
+
+        .cct-wordmark .line-1,
+        .cct-wordmark .line-2 {
+          font-size: clamp(1.05rem, 4vw, 1.7rem);
+        }
+
+        .cct-wordmark .line-3 {
+          font-size: 0.6rem;
+          letter-spacing: 0.08em;
+        }
+
+        #loginView {
+          padding: 0.75rem;
+        }
+
+        #loginView > div {
+          max-width: 100%;
+        }
+
+        #loginView .w-full.max-w-md {
+          max-width: none;
+        }
+
+        .sidebar-link {
+          padding-top: 0.7rem !important;
+          padding-bottom: 0.7rem !important;
+        }
+
+        .sidebar-link span:last-child {
+          font-size: 0.82rem;
+        }
+
+        .rounded-3xl,
+        .rounded-2xl,
+        .rounded-xl {
+          border-radius: 1rem !important;
+        }
+      }
+    </style>
+  </head>
+  <body class="font-sans text-cct-text antialiased">
+    <div id="pageLoader" class="fixed inset-0 z-[60] flex items-center justify-center bg-gradient-to-br from-cct-navy via-[#0d1d36] to-[#152c4c] transition-opacity duration-500">
+      <div class="w-[22rem] max-w-[calc(100vw-2rem)]">
+        <div class="loader-sheet relative rounded-[1.5rem] border border-white/10 bg-white/5 p-5 shadow-soft backdrop-blur-sm">
+          <div class="flex items-center justify-between text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-300">
+            <span>College of Cape Town</span>
+            <span>Portal</span>
+          </div>
+
+          <div class="mt-5 rounded-2xl border border-white/10 bg-slate-950/40 p-4">
+            <div class="mb-3 flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-cct-gold/20 text-cct-gold">
+                  <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M7 4.5h8.5a2 2 0 0 1 2 2V18a1 1 0 0 1-1.45.9L12 17l-4.05 1.9A1 1 0 0 1 6.5 18V6.5a2 2 0 0 1 2-2Z"/>
+                    <path d="M9 8.5h6M9 11.5h6M9 14.5h4"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-xs font-medium text-slate-200">Academic Report</p>
+                  <p class="text-[10px] text-slate-400">Term 2 • 2026</p>
+                </div>
+              </div>
+              <span class="rounded-full border border-emerald-400/40 bg-emerald-500/10 px-2 py-1 text-[9px] font-semibold uppercase tracking-[0.14em] text-emerald-300">Ready</span>
+            </div>
+
+            <div class="space-y-2">
+              <div class="loader-line h-2.5 w-full rounded-full bg-white/10"></div>
+              <div class="loader-line h-2.5 w-4/5 rounded-full bg-white/10"></div>
+              <div class="loader-line h-2.5 w-2/3 rounded-full bg-white/10"></div>
+              <div class="loader-line h-2.5 w-3/5 rounded-full bg-white/10"></div>
+            </div>
+          </div>
+
+          <div class="mt-5">
+            <div class="mb-2 flex items-center justify-between text-[10px] font-medium uppercase tracking-[0.2em] text-slate-300">
+              <span>Loading</span>
+              <span id="loaderPercent">0%</span>
+            </div>
+            <div class="h-2 overflow-hidden rounded-full bg-white/10">
+              <div id="loaderProgress" class="h-full w-0 rounded-full bg-gradient-to-r from-cct-gold via-[#e3c56d] to-[#f7e3a6] transition-all duration-150"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="mobileSidebarBackdrop" class="mobile-overlay fixed inset-0 z-30 hidden opacity-0 transition-opacity duration-300 md:hidden"></div>
+
+    <div id="appView" class="hidden min-h-screen bg-cct-mist">
+      <div class="flex min-h-screen">
+        <aside id="sidebar" class="sidebar-accent fixed inset-y-0 left-0 z-40 w-72 -translate-x-full border-r border-white/10 bg-cct-navy text-white shadow-2xl transition-all duration-300 ease-out md:static md:translate-x-0 md:shadow-2xl">
+          <div class="flex items-center gap-3 border-b border-white/10 px-5 pb-5 pt-6">
+            <div class="cct-logo">
+              <div class="cct-logo-mark" aria-hidden="true"></div>
+              <div class="cct-wordmark text-left">
+                <span class="line-1">COLLEGE OF</span>
+                <span class="line-2">CAPE TOWN</span>
+                <span class="line-3">Inspiring minds</span>
+              </div>
+            </div>
+          </div>
+
+          <nav class="flex-1 space-y-2 px-4 py-5">
+            <button class="sidebar-link data-view-button flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm font-medium text-slate-200 transition hover:bg-white/5 active:bg-white/10" data-view="dashboard" aria-label="Open student dashboard">
+              <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-white/5 text-cct-gold transition-transform duration-200">
+                <svg viewBox="0 0 24 24" class="icon-dashboard h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M4 13.5h7V20H4v-6.5Zm9-11h7v9h-7V2.5Zm0 12h7V20h-7v-5.5ZM4 2.5h7v7H4v-7Z"/>
+                </svg>
+              </span>
+              <span>Student Dashboard</span>
+            </button>
+
+            <button class="sidebar-link data-view-button flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm font-medium text-slate-200 transition hover:bg-white/5 active:bg-white/10" data-view="reports" aria-label="Open my reports">
+              <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-white/5 text-cct-gold transition-transform duration-200">
+                <svg viewBox="0 0 24 24" class="icon-reports h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M7 4.5h8l4 4V18a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6.5a2 2 0 0 1 2-2Z"/>
+                  <path d="M15 4.5V9h4M9 12h6M9 15h6"/>
+                </svg>
+              </span>
+              <span>My Reports</span>
+            </button>
+
+            <button class="sidebar-link data-view-button flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm font-medium text-slate-200 transition hover:bg-white/5 active:bg-white/10" data-view="settings" aria-label="Open settings">
+              <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-white/5 text-cct-gold transition-transform duration-200">
+                <svg viewBox="0 0 24 24" class="nav-icon-gear icon-settings h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M12 3.5v2.2m0 14.6v2.2M4.93 4.93l1.55 1.55m11.04 11.04 1.55 1.55M3.5 12h2.2m14.6 0h2.2M5.93 18.07l1.55-1.55m8.9-8.9 1.55-1.55M12 8.2A3.8 3.8 0 1 1 12 15.8a3.8 3.8 0 0 1 0-7.6Z"/>
+                </svg>
+              </span>
+              <span>Settings</span>
+            </button>
+          </nav>
+
+          <div class="border-t border-white/10 px-4 pb-5 pt-4">
+            <button class="sidebar-link data-view-button flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm font-medium text-slate-300 transition hover:bg-red-500/10 hover:text-red-200 active:bg-red-500/20" data-view="logout" aria-label="Log out of the student portal">
+              <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-red-500/10 text-red-200 transition-transform duration-200">
+                <svg viewBox="0 0 24 24" class="icon-logout h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h7A1.5 1.5 0 0 1 19 5.5v13A1.5 1.5 0 0 1 17.5 20h-7A1.5 1.5 0 0 1 9 18.5V17"/>
+                  <path d="M14 12H4m0 0 3-3m-3 3 3 3"/>
+                </svg>
+              </span>
+              <span>Logout</span>
+            </button>
+          </div>
+        </aside>
+
+        <div class="flex min-h-screen w-full flex-1 flex-col">
+          <header class="border-b border-slate-200/80 bg-white/80 px-4 py-4 backdrop-blur-sm md:px-8">
+            <div class="flex items-center justify-between gap-4">
+              <div class="flex items-center gap-3 md:hidden">
+                <button id="mobileMenuToggle" class="flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 shadow-sm transition-all duration-200 hover:border-slate-300 hover:text-cct-navy" aria-label="Open mobile menu" aria-expanded="false">
+                  <span class="flex flex-col items-center justify-center gap-1.5">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                  </span>
+                </button>
+              </div>
+              <div>
+                <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-cct-gold">Academic access</p>
+                <h1 class="mt-1 font-serif text-2xl font-semibold tracking-tight text-slate-900">Your Academic Reports</h1>
+              </div>
+              <div class="hidden items-center gap-3 rounded-full border border-slate-200 bg-slate-50 px-3 py-2 md:flex">
+                <div class="flex h-8 w-8 items-center justify-center rounded-full bg-cct-gold/15 font-serif text-sm font-semibold text-cct-navy">A</div>
+                <div>
+                  <p class="text-sm font-semibold text-slate-800">Aisha Ndlovu</p>
+                  <p class="text-[11px] text-slate-500">Student number: STU-24019</p>
+                </div>
+              </div>
+            </div>
+          </header>
+
+          <main class="flex-1 p-4 md:p-8">
+            <section id="dashboardView" class="fade-in">
+              <div class="mb-6 rounded-3xl border border-slate-200 bg-white p-5 shadow-soft md:p-7">
+                <div class="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+                  <div>
+                    <p class="text-xs font-bold uppercase tracking-[0.18em] text-cct-gold">Welcome back</p>
+                    <h2 class="mt-2 font-serif text-3xl font-semibold tracking-tight text-slate-900">Welcome back, Aisha</h2>
+                    <p class="mt-2 max-w-xl text-sm text-slate-600">Access and manage your academic reports, review the latest assessment, and download the official record when it is ready.</p>
+                  </div>
+
+                  <div class="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-left">
+                    <div class="flex items-center gap-2">
+                      <span class="status-pulse inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
+                      <span class="text-xs font-bold uppercase tracking-[0.18em] text-emerald-700">Latest report</span>
+                    </div>
+                    <p class="mt-2 text-sm font-semibold text-slate-800">Available for viewing</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mb-8 grid gap-4 xl:grid-cols-[1.6fr,0.9fr]">
+                <article class="report-card-glow relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-6 shadow-soft transition-all duration-200 hover:-translate-y-1 hover:shadow-xl">
+                  <div class="absolute right-5 top-5 h-20 w-20 rounded-full bg-cct-gold/10 blur-2xl"></div>
+                  <div class="relative flex flex-col gap-5">
+                    <div class="flex items-center justify-between gap-4">
+                      <div class="flex items-center gap-4">
+                        <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-cct-gold/15 text-cct-navy transition-transform duration-200 hover:scale-105">
+                          <svg viewBox="0 0 24 24" class="h-7 w-7" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <path d="M7 4.5h8l4 4V18a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6.5a2 2 0 0 1 2-2Z"/>
+                            <path d="M15 4.5V9h4M9 12h6M9 15h6"/>
+                          </svg>
+                        </div>
+                        <div>
+                          <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-cct-gold">Latest report</p>
+                          <h3 class="mt-1 font-serif text-2xl font-semibold text-slate-900">Term 2 • 2026</h3>
+                        </div>
+                      </div>
+                      <span id="latestReportBadge" class="inline-flex items-center rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700">Available</span>
+                    </div>
+
+                    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                      <div class="flex items-start justify-between gap-3">
+                        <div>
+                          <p class="text-sm font-semibold text-slate-700">Status</p>
+                          <p class="mt-1 text-sm text-slate-600">Your report is ready to view and download.</p>
+                        </div>
+                        <div class="rounded-full bg-emerald-100 p-2 text-emerald-700">
+                          <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12.5 9.5 17 19 7.5"/>
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="flex flex-col gap-3 sm:flex-row">
+                      <button id="viewReportButton" class="inline-flex items-center justify-center gap-2 rounded-xl bg-cct-navy px-5 py-3 text-sm font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-cct-slate focus:outline-none focus:ring-2 focus:ring-cct-gold focus:ring-offset-2" type="button">
+                        <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8">
+                          <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/>
+                          <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                        View Report
+                      </button>
+                      <button id="downloadReportButton" class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-800 transition-all duration-200 hover:-translate-y-0.5 hover:border-slate-400 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-cct-gold focus:ring-offset-2" type="button">
+                        <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8">
+                          <path d="M12 4v10m0 0 4-4m-4 4-4-4M5 18.5h14"/>
+                        </svg>
+                        Download PDF
+                      </button>
+                    </div>
+                  </div>
+                </article>
+
+                <aside class="rounded-3xl border border-slate-200 bg-white p-5 shadow-soft transition-all duration-200 hover:-translate-y-1 hover:shadow-xl">
+                  <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-cct-gold">Student profile</p>
+                  <div class="mt-4 flex items-center gap-3">
+                    <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-cct-navy text-lg font-semibold text-white">AN</div>
+                    <div>
+                      <p class="font-semibold text-slate-900">Aisha Ndlovu</p>
+                      <p class="text-sm text-slate-500">Diploma in Business Studies</p>
+                    </div>
+                  </div>
+
+                  <div class="mt-6 space-y-3 text-sm">
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                      <span class="text-slate-500">Student number</span>
+                      <span class="font-semibold text-slate-800">STU-24019</span>
+                    </div>
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                      <span class="text-slate-500">Academic year</span>
+                      <span class="font-semibold text-slate-800">2026</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                      <span class="text-slate-500">Current status</span>
+                      <span class="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700">Active</span>
+                    </div>
+                  </div>
+                </aside>
+              </div>
+
+              <section class="rounded-3xl border border-slate-200 bg-white p-5 shadow-soft md:p-6">
+                <div class="mb-4 flex items-center justify-between gap-3">
+                  <div>
+                    <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-cct-gold">History</p>
+                    <h3 class="mt-1 font-serif text-2xl font-semibold text-slate-900">Previous Reports</h3>
+                  </div>
+                  <span class="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-600">3 record(s)</span>
+                </div>
+
+                <div id="previousReportsList" class="space-y-3"></div>
+              </section>
+            </section>
+
+            <section id="reportsView" class="hidden fade-in">
+              <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-soft md:p-6">
+                <div class="mb-5 flex items-center justify-between gap-3">
+                  <div>
+                    <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-cct-gold">Report library</p>
+                    <h2 class="mt-1 font-serif text-2xl font-semibold text-slate-900">My Reports</h2>
+                  </div>
+                </div>
+
+                <div class="overflow-hidden rounded-2xl border border-slate-200">
+                  <table class="report-table min-w-full divide-y divide-slate-200 text-left text-sm">
+                    <thead class="bg-slate-50 text-slate-600">
+                      <tr>
+                        <th class="px-4 py-3 font-semibold">Term</th>
+                        <th class="px-4 py-3 font-semibold">Type</th>
+                        <th class="px-4 py-3 font-semibold">Status</th>
+                        <th class="px-4 py-3 font-semibold">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="reportTableBody" class="divide-y divide-slate-100 bg-white"></tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+
+            <section id="settingsView" class="hidden fade-in">
+              <div class="grid gap-6 lg:grid-cols-[1.2fr,0.8fr]">
+                <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-soft md:p-6">
+                  <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-cct-gold">Settings</p>
+                  <h2 class="mt-1 font-serif text-2xl font-semibold text-slate-900">Profile & preferences</h2>
+
+                  <div class="mt-5 space-y-4">
+                    <div>
+                      <label for="studentNameInput" class="mb-2 block text-sm font-medium text-slate-700">Full name</label>
+                      <input id="studentNameInput" type="text" value="Aisha Ndlovu" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-800 outline-none transition focus:border-cct-gold focus:ring-2 focus:ring-cct-gold/20" />
+                    </div>
+                    <div>
+                      <label for="studentEmailInput" class="mb-2 block text-sm font-medium text-slate-700">Email address</label>
+                      <input id="studentEmailInput" type="email" value="aisha.ndlovu@collegecapetown.ac.za" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-800 outline-none transition focus:border-cct-gold focus:ring-2 focus:ring-cct-gold/20" />
+                    </div>
+                    <div>
+                      <label for="studentPhoneInput" class="mb-2 block text-sm font-medium text-slate-700">Phone number</label>
+                      <input id="studentPhoneInput" type="tel" value="+27 82 123 4567" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-800 outline-none transition focus:border-cct-gold focus:ring-2 focus:ring-cct-gold/20" />
+                    </div>
+                  </div>
+
+                  <div class="mt-6 flex flex-wrap gap-3">
+                    <button id="saveSettingsButton" type="button" class="rounded-xl bg-cct-navy px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-cct-slate">Save changes</button>
+                    <button type="button" class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-100">Cancel</button>
+                  </div>
+                </div>
+
+                <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-soft md:p-6">
+                  <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-cct-gold">Preferences</p>
+                  <h3 class="mt-1 font-serif text-2xl font-semibold text-slate-900">Alerts</h3>
+
+                  <div class="mt-5 space-y-4">
+                    <label class="flex items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-slate-50 p-3">
+                      <div>
+                        <p class="text-sm font-semibold text-slate-800">New report email alerts</p>
+                        <p class="text-xs text-slate-500">Receive an email when reports are published</p>
+                      </div>
+                      <input type="checkbox" checked class="h-4 w-4 rounded border-slate-300 text-cct-gold focus:ring-cct-gold" />
+                    </label>
+
+                    <label class="flex items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-slate-50 p-3">
+                      <div>
+                        <p class="text-sm font-semibold text-slate-800">Dark mode</p>
+                        <p class="text-xs text-slate-500">Use a darker interface for reading reports</p>
+                      </div>
+                      <input type="checkbox" class="h-4 w-4 rounded border-slate-300 text-cct-gold focus:ring-cct-gold" />
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </main>
+        </div>
+      </div>
+    </div>
+
+    <div id="loginView" class="hidden min-h-screen items-center justify-center bg-slate-100 px-4 py-10 md:px-8">
+      <div class="grid w-full max-w-5xl overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-soft md:grid-cols-[1.1fr,1.2fr]">
+        <div class="relative hidden bg-cct-navy p-8 text-white md:flex md:flex-col md:justify-between">
+          <div class="absolute inset-0 opacity-90">
+            <div class="absolute -right-20 -top-20 h-56 w-56 rounded-full border border-cct-gold/20"></div>
+            <div class="absolute bottom-0 left-0 h-72 w-72 rounded-full border border-cct-gold/10"></div>
+          </div>
+
+          <div class="relative z-10">
+            <div class="cct-logo mb-10">
+              <div class="cct-logo-mark" aria-hidden="true"></div>
+              <div class="cct-wordmark text-left">
+                <span class="line-1">COLLEGE OF</span>
+                <span class="line-2">CAPE TOWN</span>
+                <span class="line-3">Inspiring minds</span>
+              </div>
+            </div>
+
+            <div class="mt-14 max-w-sm">
+              <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-cct-gold">Secure access</p>
+              <h1 class="mt-3 font-serif text-4xl font-semibold tracking-tight leading-tight">Academic reporting made simple.</h1>
+              <p class="mt-4 text-sm leading-6 text-slate-300">Login to view your latest academic result, download your report, and review previous records in one place.</p>
+            </div>
+          </div>
+
+          <div class="relative z-10 mt-6 max-w-[420px] rounded-2xl border border-cct-gold/30 bg-black/10 p-4 text-left shadow-sm">
+            <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-cct-gold">College of Cape Town</p>
+            <p class="mt-2 font-serif text-2xl font-semibold tracking-tight text-white">Inspiring minds</p>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-center p-6 sm:p-10">
+          <div class="w-full max-w-md">
+            <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-cct-gold">Student login</p>
+            <h2 class="mt-2 font-serif text-3xl font-semibold text-slate-900">Welcome</h2>
+            <p class="mt-2 text-sm text-slate-500">Access your academic reports securely.</p>
+
+            <form id="loginForm" class="mt-8 space-y-5" novalidate>
+              <div>
+                <label class="mb-2 block text-sm font-medium text-slate-700" for="studentNumber">Student number</label>
+                <input id="studentNumber" type="text" value="STU-24019" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-3 text-sm text-slate-800 outline-none transition focus:border-cct-gold focus:ring-2 focus:ring-cct-gold/20" aria-label="Student number" />
+              </div>
+
+              <div>
+                <label class="mb-2 block text-sm font-medium text-slate-700" for="studentPassword">Password</label>
+                <input id="studentPassword" type="password" value="password123" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-3 text-sm text-slate-800 outline-none transition focus:border-cct-gold focus:ring-2 focus:ring-cct-gold/20" aria-label="Password" />
+              </div>
+
+              <div class="flex items-center justify-between gap-3 text-sm">
+                <label class="inline-flex items-center gap-2 text-slate-600">
+                  <input type="checkbox" class="h-4 w-4 rounded border-slate-300 text-cct-gold focus:ring-cct-gold" />
+                  Remember me
+                </label>
+                <button type="button" class="font-semibold text-cct-slate transition hover:text-cct-navy">Need help?</button>
+              </div>
+
+              <button type="submit" class="w-full rounded-xl bg-cct-navy px-4 py-3.5 text-sm font-semibold text-white transition hover:bg-cct-slate focus:outline-none focus:ring-2 focus:ring-cct-gold focus:ring-offset-2">Continue to dashboard</button>
+            </form>
+
+            <div class="mt-6 rounded-2xl border border-cct-gold/20 bg-cct-gold/5 p-3 text-sm text-slate-700">
+              Demo access: use any student number and password to continue.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="reportModal" class="modal-backdrop fixed inset-0 z-50 hidden items-center justify-center p-4">
+      <div class="w-full max-w-4xl rounded-[2rem] border border-slate-200 bg-white shadow-2xl">
+        <div class="flex items-center justify-between border-b border-slate-200 px-5 py-4 md:px-6">
+          <div>
+            <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-cct-gold">Student report</p>
+            <h3 class="mt-1 font-serif text-2xl font-semibold text-slate-900">Academic Report Preview</h3>
+          </div>
+          <button id="closeReportModal" type="button" class="rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-600 transition hover:border-slate-300 hover:bg-slate-100" aria-label="Close academic report preview">
+            <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M6 6l12 12M18 6 6 18"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="max-h-[80vh] overflow-y-auto p-5 md:p-7">
+          <div class="rounded-3xl border border-slate-200 bg-slate-50 p-5 md:p-7">
+            <div class="flex items-start justify-between gap-4 border-b border-slate-200 pb-4">
+              <div class="flex items-center gap-3">
+                <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-cct-navy text-cct-gold">
+                  <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M12 3.75 4.5 7.5v9L12 20.25l7.5-3.75v-9L12 3.75Z"/>
+                    <path d="M12 3.75v16.5M4.5 7.5l7.5 4 7.5-4"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="font-serif text-xl font-semibold text-slate-900">College of Cape Town</p>
+                  <p class="text-xs text-slate-500">Academic Report</p>
+                </div>
+              </div>
+
+              <div class="text-right text-xs text-slate-500">
+                <p class="font-semibold uppercase tracking-[0.12em] text-cct-gold">Term 2</p>
+                <p class="mt-1">2026</p>
+              </div>
+            </div>
+
+            <div class="mt-5 grid gap-4 md:grid-cols-2">
+              <div>
+                <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Student name</p>
+                <p class="mt-1 text-base font-semibold text-slate-800">Aisha Ndlovu</p>
+              </div>
+              <div>
+                <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Student number</p>
+                <p class="mt-1 text-base font-semibold text-slate-800">STU-24019</p>
+              </div>
+              <div>
+                <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Programme</p>
+                <p class="mt-1 text-base font-semibold text-slate-800">Diploma in Business Studies</p>
+              </div>
+              <div>
+                <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Academic year</p>
+                <p class="mt-1 text-base font-semibold text-slate-800">2026</p>
+              </div>
+            </div>
+
+            <div class="mt-8 overflow-hidden rounded-2xl border border-slate-200 bg-white">
+              <table class="min-w-full text-left text-sm">
+                <thead class="bg-slate-50 text-slate-600">
+                  <tr>
+                    <th class="px-4 py-3 font-semibold">Module</th>
+                    <th class="px-4 py-3 font-semibold">Assessment</th>
+                    <th class="px-4 py-3 font-semibold">Result</th>
+                    <th class="px-4 py-3 font-semibold">Status</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-slate-700">
+                  <tr>
+                    <td class="px-4 py-3">Business Communication</td>
+                    <td class="px-4 py-3">Portfolio and presentation</td>
+                    <td class="px-4 py-3 font-semibold">78%</td>
+                    <td class="px-4 py-3"><span class="rounded-full bg-emerald-50 px-2 py-1 text-[11px] font-semibold text-emerald-700">Pass</span></td>
+                  </tr>
+                  <tr>
+                    <td class="px-4 py-3">Financial Management</td>
+                    <td class="px-4 py-3">Term test and case study</td>
+                    <td class="px-4 py-3 font-semibold">83%</td>
+                    <td class="px-4 py-3"><span class="rounded-full bg-emerald-50 px-2 py-1 text-[11px] font-semibold text-emerald-700">Pass</span></td>
+                  </tr>
+                  <tr>
+                    <td class="px-4 py-3">Marketing Principles</td>
+                    <td class="px-4 py-3">Research project</td>
+                    <td class="px-4 py-3 font-semibold">74%</td>
+                    <td class="px-4 py-3"><span class="rounded-full bg-emerald-50 px-2 py-1 text-[11px] font-semibold text-emerald-700">Pass</span></td>
+                  </tr>
+                  <tr>
+                    <td class="px-4 py-3">Operations Management</td>
+                    <td class="px-4 py-3">Practical assessment</td>
+                    <td class="px-4 py-3 font-semibold">81%</td>
+                    <td class="px-4 py-3"><span class="rounded-full bg-emerald-50 px-2 py-1 text-[11px] font-semibold text-emerald-700">Pass</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="mt-8 grid gap-4 md:grid-cols-3">
+              <div class="rounded-2xl border border-slate-200 bg-white p-4">
+                <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Overall average</p>
+                <p class="mt-2 font-serif text-3xl font-semibold text-cct-navy">79%</p>
+              </div>
+              <div class="rounded-2xl border border-slate-200 bg-white p-4">
+                <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Outcome</p>
+                <p class="mt-2 text-lg font-semibold text-emerald-700">Promoted</p>
+              </div>
+              <div class="rounded-2xl border border-slate-200 bg-white p-4">
+                <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Advice</p>
+                <p class="mt-2 text-sm font-medium text-slate-700">Continue strong academic performance.</p>
+              </div>
+            </div>
+
+            <div class="mt-8 rounded-2xl border-l-4 border-cct-gold bg-cct-gold/5 p-4">
+              <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-600">Academic comments</p>
+              <ul class="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-700">
+                <li>Aisha demonstrates solid progress and consistent effort across core modules.</li>
+                <li>Professional communication and systematic work habits are evident.</li>
+                <li>Continued focus in Financial Management will support future advanced study.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const loginView = document.getElementById('loginView');
+      const appView = document.getElementById('appView');
+      const sidebar = document.getElementById('sidebar');
+      const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+      const mobileSidebarBackdrop = document.getElementById('mobileSidebarBackdrop');
+      const loginForm = document.getElementById('loginForm');
+      const reportModal = document.getElementById('reportModal');
+      const closeReportModalButton = document.getElementById('closeReportModal');
+      const viewReportButton = document.getElementById('viewReportButton');
+      const downloadReportButton = document.getElementById('downloadReportButton');
+      const previousReportsList = document.getElementById('previousReportsList');
+      const reportTableBody = document.getElementById('reportTableBody');
+      const saveSettingsButton = document.getElementById('saveSettingsButton');
+
+      const previousReports = [
+        { term: 'Term 1 • 2026', type: 'Academic report', status: 'Available', label: 'View report', pdfName: 'term-1-report-2026.pdf' },
+        { term: 'Term 4 • 2025', type: 'Academic report', status: 'Available', label: 'View report', pdfName: 'term-4-report-2025.pdf' },
+        { term: 'Term 3 • 2025', type: 'Academic report', status: 'Available', label: 'View report', pdfName: 'term-3-report-2025.pdf' },
+      ];
+
+      function showLoginScreen() {
+        appView.classList.add('hidden');
+        appView.classList.remove('flex');
+        loginView.classList.remove('hidden');
+        loginView.classList.add('flex');
+      }
+
+      function showAppScreen() {
+        loginView.classList.add('hidden');
+        loginView.classList.remove('flex');
+        appView.classList.remove('hidden');
+        appView.classList.add('flex');
+      }
+
+      function hideLoader() {
+        const loader = document.getElementById('pageLoader');
+        if (!loader) return;
+        loader.classList.add('opacity-0');
+        setTimeout(() => {
+          loader.classList.add('hidden');
+          showLoginScreen();
+        }, 450);
+      }
+
+      function startLoader() {
+        const loaderProgress = document.getElementById('loaderProgress');
+        const loaderPercent = document.getElementById('loaderPercent');
+        let progress = 0;
+
+        const timer = setInterval(() => {
+          progress += 4;
+          if (loaderProgress) loaderProgress.style.width = `${progress}%`;
+          if (loaderPercent) loaderPercent.textContent = `${progress}%`;
+          if (progress >= 100) {
+            clearInterval(timer);
+            setTimeout(hideLoader, 300);
+          }
+        }, 80);
+      }
+
+      function toggleSidebar(forceState) {
+        if (!sidebar || !mobileMenuToggle || !mobileSidebarBackdrop) return;
+
+        const shouldOpen = typeof forceState === 'boolean' ? forceState : !sidebar.classList.contains('mobile-sidebar-open');
+
+        sidebar.classList.toggle('mobile-sidebar-open', shouldOpen);
+        sidebar.classList.toggle('-translate-x-full', !shouldOpen);
+        sidebar.classList.toggle('translate-x-0', shouldOpen);
+
+        mobileMenuToggle.classList.toggle('menu-open', shouldOpen);
+        mobileMenuToggle.setAttribute('aria-expanded', String(shouldOpen));
+
+        if (window.innerWidth < 768) {
+          mobileSidebarBackdrop.classList.toggle('hidden', !shouldOpen);
+          requestAnimationFrame(() => {
+            mobileSidebarBackdrop.classList.toggle('opacity-0', !shouldOpen);
+            mobileSidebarBackdrop.classList.toggle('opacity-100', shouldOpen);
+          });
+        }
+      }
+
+      function activateView(viewName) {
+        const views = ['dashboardView', 'reportsView', 'settingsView'];
+        views.forEach((id) => {
+          const node = document.getElementById(id);
+          if (node) node.classList.add('hidden');
+        });
+
+        if (viewName === 'dashboard') {
+          document.getElementById('dashboardView').classList.remove('hidden');
+        } else if (viewName === 'reports') {
+          document.getElementById('reportsView').classList.remove('hidden');
+        } else if (viewName === 'settings') {
+          document.getElementById('settingsView').classList.remove('hidden');
+        }
+
+        document.querySelectorAll('.data-view-button').forEach((button) => {
+          const active = button.dataset.view === viewName;
+          button.classList.toggle('bg-white/8', active);
+          button.classList.toggle('text-white', active);
+          button.classList.toggle('ring-1', active);
+          button.classList.toggle('ring-white/10', active);
+          button.classList.toggle('font-semibold', active);
+        });
+
+        if (window.innerWidth < 768) {
+          toggleSidebar(false);
+        }
+      }
+
+      function renderPreviousReports() {
+        if (!previousReportsList) return;
+
+        previousReportsList.innerHTML = previousReports.map((report, index) => `
+          <div class="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 md:flex-row md:items-center md:justify-between">
+            <div class="flex items-center gap-3">
+              <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-cct-gold/15 text-cct-navy">
+                <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M7 4.5h8l4 4V18a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6.5a2 2 0 0 1 2-2Z"/>
+                  <path d="M15 4.5V9h4M9 12h6M9 15h6"/>
+                </svg>
+              </div>
+              <div>
+                <p class="text-sm font-semibold text-slate-800">${report.term}</p>
+                <p class="text-xs text-slate-500">${report.type}</p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3 md:flex-row md:items-center">
+              <span class="rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-700">${report.status}</span>
+              <div class="flex items-center gap-2">
+                <button type="button" class="view-report-row rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50" data-index="${index}">View</button>
+                <button type="button" class="download-row rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50" data-pdf="${report.pdfName}">Download</button>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      function renderTableReports() {
+        if (!reportTableBody) return;
+
+        reportTableBody.innerHTML = previousReports.map((report, index) => `
+          <tr>
+            <td class="px-4 py-3 font-medium text-slate-800">${report.term}</td>
+            <td class="px-4 py-3 text-slate-700">${report.type}</td>
+            <td class="px-4 py-3"><span class="rounded-full bg-emerald-50 px-2 py-1 text-[11px] font-semibold text-emerald-700">${report.status}</span></td>
+            <td class="px-4 py-3">
+              <div class="flex gap-2">
+                <button type="button" class="view-report-row rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50" data-index="${index}">View</button>
+                <button type="button" class="download-row rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50" data-pdf="${report.pdfName}">Download</button>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      function openReportModal() {
+        if (!reportModal) return;
+        reportModal.classList.remove('hidden');
+        reportModal.classList.add('flex');
+      }
+
+      function closeReportModal() {
+        if (!reportModal) return;
+        reportModal.classList.add('hidden');
+        reportModal.classList.remove('flex');
+      }
+
+      function downloadMockPdf(fileName) {
+        const pdfContent = `%PDF-1.4\n1 0 obj<< /Type /Catalog /Pages 2 0 R >>endobj\n2 0 obj<< /Type /Pages /Kids [3 0 R] /Count 1 >>endobj\n3 0 obj<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>endobj\n4 0 obj<< /Length 122 >>stream\nBT /F1 18 Tf 72 720 Td (College of Cape Town - Academic Report) Tj 0 -30 Td /F1 13 Tf (Student: Aisha Ndlovu) Tj 0 -20 Td (Term 2, 2026) Tj ET endstream endobj\n5 0 obj<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>endobj\nxref\n0 6\n0000000000 65535 f \n0000000010 00000 n \n0000000062 00000 n \n0000000123 00000 n \n0000000455 00000 n \n0000000681 00000 n \ntrailer\n<< /Root 1 0 R /Size 6 >>\nstartxref\n789\n%%EOF`;
+
+        const blob = new Blob([pdfContent], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fileName || 'college-report.pdf';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      }
+
+      function handleDownload(fromRowIndex) {
+        const safeIndex = typeof fromRowIndex === 'number' ? fromRowIndex : 0;
+        const target = previousReports[safeIndex] || previousReports[0];
+        downloadMockPdf(target.pdfName || 'college-report.pdf');
+      }
+
+      loginForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        showAppScreen();
+        activateView('dashboard');
+      });
+
+      viewReportButton.addEventListener('click', openReportModal);
+      closeReportModalButton.addEventListener('click', closeReportModal);
+      reportModal.addEventListener('click', (event) => {
+        if (event.target === reportModal) closeReportModal();
+      });
+
+      downloadReportButton.addEventListener('click', () => handleDownload(0));
+
+      document.addEventListener('click', (event) => {
+        const reportButton = event.target.closest('.view-report-row');
+        if (reportButton) {
+          const index = Number(reportButton.dataset.index || 0);
+          openReportModal();
+          handleDownload(index);
+          return;
+        }
+
+        const downloadButton = event.target.closest('.download-row');
+        if (downloadButton) {
+          const pdfName = downloadButton.dataset.pdf || 'college-report.pdf';
+          downloadMockPdf(pdfName);
+        }
+      });
+
+      document.querySelectorAll('.data-view-button').forEach((button) => {
+        button.addEventListener('click', () => {
+          const view = button.dataset.view;
+          if (view === 'logout') {
+            showLoginScreen();
+            return;
+          }
+
+          activateView(view);
+        });
+      });
+
+      mobileMenuToggle.addEventListener('click', () => {
+        toggleSidebar();
+      });
+
+      mobileSidebarBackdrop.addEventListener('click', () => {
+        toggleSidebar(false);
+      });
+
+      saveSettingsButton.addEventListener('click', () => {
+        const name = document.getElementById('studentNameInput').value.trim() || 'Aisha Ndlovu';
+        document.querySelector('h2').textContent = `Welcome back, ${name.split(' ')[0]}`;
+        alert('Your profile changes have been saved.');
+      });
+
+      window.addEventListener('resize', () => {
+        if (window.innerWidth >= 768) {
+          sidebar.classList.remove('mobile-sidebar-open');
+          sidebar.classList.remove('-translate-x-full');
+          sidebar.classList.add('translate-x-0');
+          mobileMenuToggle.classList.remove('menu-open');
+          mobileMenuToggle.setAttribute('aria-expanded', 'false');
+          mobileSidebarBackdrop.classList.add('hidden');
+          mobileSidebarBackdrop.classList.add('opacity-0');
+          mobileSidebarBackdrop.classList.remove('opacity-100');
+        } else {
+          if (!sidebar.classList.contains('mobile-sidebar-open')) {
+            sidebar.classList.add('-translate-x-full');
+            sidebar.classList.remove('translate-x-0');
+          }
+        }
+      });
+
+      renderPreviousReports();
+      renderTableReports();
+      activateView('dashboard');
+      startLoader();
+
+      // TODO: Replace mock report data with API response from ASP.NET Core backend.
+      // TODO: Replace mock PDF generation with real PDF endpoint integration.
+    </script>
+  </body>
+</html>
